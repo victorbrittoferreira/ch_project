@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, SerializerMethodField
 from users.models import User
 from .models import Company
 
@@ -22,3 +22,13 @@ class CompanyMemberSerializer(ModelSerializer):
         member_ids = validated_data.get('members')
         instance.members.add(*member_ids)
         return instance
+
+
+class MembersSerializer(ModelSerializer):
+    full_name = SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ['id', 'full_name']
+
+    def get_full_name(self, obj: User):
+        return f"{obj.first_name} {obj.last_name}"
