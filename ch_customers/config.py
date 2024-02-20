@@ -34,3 +34,7 @@ class EnvConfig:
     @staticmethod
     def get_db_password() -> str:
         return EnvConfig.env('DB_PASSWORD')
+    
+    @staticmethod
+    def get_celery_broker_url() -> str:
+        return EnvConfig.env('CELERY_BROKER_URL')

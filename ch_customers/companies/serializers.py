@@ -1,6 +1,22 @@
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, SerializerMethodField
+from rest_framework.serializers import Serializer, CharField, ModelSerializer, PrimaryKeyRelatedField, SerializerMethodField
 from users.models import User
 from .models import Company
+
+
+class CompanyDataSerializer(Serializer):
+    nome = CharField(max_length=255, required=True, allow_blank=True)
+    fantasia = CharField(max_length=255, required=True, allow_blank=True)
+    status = CharField(max_length=100, required=True, allow_blank=True)
+
+    def validate(self, data):
+        data['legal_name'] = data.pop('nome', None) 
+        data['brand_name'] = data.pop('fantasia', None)
+        data = {key: value for key, value in data.items() if value is not None and value != ''}
+        return data
+    
+    class Meta:
+        model = Company
+        fields = ['brand_name', 'legal_name', 'status']
 
 class CompanySerializer(ModelSerializer):
     class Meta:

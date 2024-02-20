@@ -13,6 +13,11 @@ djangorestframework = "~3.14"
 psycopg2 = "^2.9.9"
 django-environ = "^0.11.2"
 djangorestframework-simplejwt = "^5.3.1"
+celery = {extras = ["redis"], version = "^5.3.6"}
+flower = "^2.0.1"
+requests = "^2.31.0"
+django-celery-results = "^2.5.1"
+django-celery-beat = "^2.5.0"
 
 
 [tool.poetry.group.dev.dependencies]

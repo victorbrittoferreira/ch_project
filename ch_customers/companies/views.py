@@ -18,7 +18,6 @@ class CompanyListCreateAPIView(ListCreateAPIView):
             members=[user]
         )
 
-
 class CompanyMemberUpdateAPIView(UpdateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanyMemberSerializer
