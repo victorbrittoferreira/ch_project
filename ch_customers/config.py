@@ -1,7 +1,7 @@
 from os.path import join, dirname
 import environ
 
-dotenv_path = join(dirname(__file__), ".env")
+dotenv_path = join(dirname(dirname(__file__)), '.env')
 
 class EnvConfig:
     env = environ.Env()
