@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ch_project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./ch_customers:/app/ch_customers
+      - ./.env:/app/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - SECRET_KEY='django-insecure-%h1+2&+2zx!-i4s_vm(4_ct%gdc!i+k_5%0-p56=xrstv%!&i7'
+      - DB_PORT=5432
+      - DB_HOST=db
+      - DB_NAME=ch_project
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - CELERY_BROKER_URL=redis://localhost:6379/0
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/ch_project
+      - REDIS_URL=redis://:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@cache:6379/0
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+volumes:
+  cache:
+    driver: local
